@@ -21,7 +21,7 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Delete
         public async Task Should_return_success_with_right_data_sent()
         {
             ////Given
-            var employeeId = GivenAValidEmployeeId();
+            var employeeId = await GivenAValidEmployeeId();
 
             ////When
             var response = await WhenRequestingTheDeleteEmployeeApiAsync(employeeId);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Farfetch.Application.Interfaces.Corporate;
 using Farfetch.Data.MongoDb.Repositories.Base;
 using Farfetch.Domain.Entities.Corporate;

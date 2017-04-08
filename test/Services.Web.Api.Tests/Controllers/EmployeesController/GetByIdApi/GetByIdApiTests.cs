@@ -24,7 +24,7 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.GetByI
         public async Task Should_return_the_employee_data_found()
         {
             ////Given
-            var employeeId = GivenAValidEmployeeId();
+            var employeeId = await GivenAValidEmployeeId();
 
             ////When
             var response = await WhenRequestingTheGetEmployeeByIdApiAsync(employeeId);

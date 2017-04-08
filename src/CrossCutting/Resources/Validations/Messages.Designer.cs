@@ -60,6 +60,15 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to {0} already exists..
+        /// </summary>
+        public static string AlreadyExists {
+            get {
+                return ResourceManager.GetString("AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to {0} and {1} cannot be filled simultaneously..
         /// </summary>
         public static string CannotBeFilledSimultaneously {

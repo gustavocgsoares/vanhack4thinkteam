@@ -26,7 +26,7 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Create
             {
                 FirstName = "Jane",
                 LastName = "Smith Doe",
-                Email = "jsd@domain.com"
+                Email = "new@domain.com"
             };
         }
 
@@ -34,7 +34,7 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Create
         {
             return new EmployeeModel
             {
-                FirstName = "Jane",
+                FirstName = "James",
                 LastName = "Smith Doe",
                 Email = "conflict@domain.com"
             };

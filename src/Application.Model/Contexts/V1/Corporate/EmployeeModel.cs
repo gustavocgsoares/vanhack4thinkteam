@@ -17,6 +17,8 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
         public virtual string Email { get; set; }
 
         public virtual string Password { get; set; }
+
+        public virtual bool? Active { get; set; }
         #endregion
 
         #region Converters
@@ -32,9 +34,10 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
             model = model ?? Instance();
 
             model.Id = entity.Id.ToString();
-            model.FirstName = entity.Name;
-            model.LastName = entity.Surname;
-            model.Email = entity.Login;
+            model.FirstName = entity.FirstName;
+            model.LastName = entity.LastName;
+            model.Email = entity.Email;
+            model.Active = entity.Active;
 
             return model;
         }
@@ -49,10 +52,11 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
             entity = entity ?? new Employee();
 
             entity.Id = Id.HasValue() ? Id.To<Guid>() : default(Guid);
-            entity.Name = FirstName;
-            entity.Surname = LastName;
-            entity.Login = Email;
+            entity.FirstName = FirstName;
+            entity.LastName = LastName;
+            entity.Email = Email;
             entity.Password = Password;
+            entity.Active = Active.GetValueOrDefault();
 
             return entity;
         }

@@ -24,7 +24,7 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Update
         public async Task Should_return_success_with_right_data_sent()
         {
             ////Given
-            var employeeId = GivenAValidEmployeeId();
+            var employeeId = await GivenAValidEmployeeId();
             var employee = GivenAValidEmployeeModel();
 
             ////When

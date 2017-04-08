@@ -40,22 +40,22 @@ namespace Farfetch.Data.MongoDb.Helpers
                             classMap.SetDiscriminator(typeof(TEntity).Name);
                             ////classMap.MapExtraElementsMember(p => classMap.GetMemberMap(a => a.Metadata));
 
-                            try
-                            {
-                                if (typeof(TId) == typeof(Guid))
-                                {
-                                    classMap.IdMemberMap.SetIdGenerator(new GuidGenerator());
-                                    classMap.IdMemberMap.SetSerializer(new StringSerializer(BsonType.String));
-                                }
-                                else
-                                {
-                                    classMap.SetIdMember(classMap.GetMemberMap(a => a.Id));
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                throw ex;
-                            }
+                            ////try
+                            ////{
+                            ////    if (typeof(TId) == typeof(Guid))
+                            ////    {
+                            ////        classMap.IdMemberMap.SetIdGenerator(new GuidGenerator());
+                            ////        classMap.IdMemberMap.SetSerializer(new StringSerializer(BsonType.String));
+                            ////    }
+                            ////    else
+                            ////    {
+                            ////        classMap.SetIdMember(classMap.GetMemberMap(a => a.Id));
+                            ////    }
+                            ////}
+                            ////catch (Exception ex)
+                            ////{
+                            ////    throw ex;
+                            ////}
                         });
                 }
             }

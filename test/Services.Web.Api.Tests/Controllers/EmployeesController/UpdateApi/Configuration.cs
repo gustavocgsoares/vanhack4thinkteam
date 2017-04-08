@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Farfetch.Application.Model.Contexts.V1.Corporate;
-using Farfetch.Application.Model.Enums.V1.Corporate;
 using Farfetch.Services.Web.Api.Tests.Base;
 using Farfetch.Services.Web.Api.Tests.Controllers.Base;
 
@@ -10,9 +9,12 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Update
 {
     public class Configuration : BaseConfiguration
     {
+        private ClassFixture fixture;
+
         public Configuration(ClassFixture fixture)
             : base(fixture)
         {
+            this.fixture = fixture;
         }
 
         public async Task<HttpResponseMessage> WhenRequestingTheUpdateEmployeeApiAsync(
@@ -23,9 +25,16 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Update
         }
 
         #region Givens
-        public string GivenAValidEmployeeId()
+        public async Task<string> GivenAValidEmployeeId()
         {
-            return "wer23423";
+            var createApiConfig = new CreateApi.Configuration(fixture);
+            var employee = createApiConfig.GivenAValidEmployeeModel();
+            employee.Email = "updateapi@domain.com";
+
+            var response = await createApiConfig.WhenRequestingTheCreateEmployeeApiAsync(employee);
+            var result = await createApiConfig.WhenGetContentAsModelAsync<EmployeeModel>(response);
+
+            return result.Id;
         }
 
         public string GivenANotExistsEmployeeId()
@@ -44,7 +53,8 @@ namespace Farfetch.Services.Web.Api.Tests.Controllers.EmployeesController.Update
             {
                 FirstName = "Jane",
                 LastName = "Smith Doe",
-                Email = "jsd@domain.com"
+                Email = "newupdateapi@domain.com",
+                Active = true
             };
         }
 

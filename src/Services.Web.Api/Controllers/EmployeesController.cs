@@ -140,12 +140,12 @@ namespace Farfetch.Services.Web.Api.Controllers
                 Items = new List<Employee>()
             };
 
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "John", Surname = "Smith Doe", Login = "conflict@domain.com" });
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "Jane", Surname = "Smith Doe", Login = "conflict@domain.com" });
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "Josh", Surname = "Smith Doe", Login = "conflict@domain.com" });
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "Alex", Surname = "Smith Doe", Login = "conflict@domain.com" });
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "Johnny", Surname = "Smith Doe", Login = "conflict@domain.com" });
-            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), Name = "Jude", Surname = "Smith Doe", Login = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "John", LastName = "Smith Doe", Email = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "Jane", LastName = "Smith Doe", Email = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "Josh", LastName = "Smith Doe", Email = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "Alex", LastName = "Smith Doe", Email = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "Johnny", LastName = "Smith Doe", Email = "conflict@domain.com" });
+            pagedList.Items.Add(new Employee { Id = Guid.NewGuid(), FirstName = "Jude", LastName = "Smith Doe", Email = "conflict@domain.com" });
 
             var totalPages = (int)Math.Ceiling((double)totalCount / limit);
 
@@ -266,11 +266,6 @@ namespace Farfetch.Services.Web.Api.Controllers
                 var entity = await employeeApp.SaveAsync(employee.ToDomain());
                 var result = EmployeeModel.ToModel(entity);
 
-                ////if (employee.Email == "conflict@domain.com")
-                ////{
-                ////    return Conflict();
-                ////}
-
                 var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
                 var getByIdlink = GetEmployeeByIdLink(urlHelper, result.Id);
                 var deleteLink = DeleteEmployeeLink(urlHelper, result.Id);
@@ -341,14 +336,6 @@ namespace Farfetch.Services.Web.Api.Controllers
                 };
 
                 return Ok(result);
-                ////if (employee.FirstName == "conflict")
-                ////{
-                ////    return Conflict();
-                ////}
-                ////else if (employee.FirstName == "notfound")
-                ////{
-                ////    return NotFound();
-                ////}
             }
             catch (InvalidParameterException ex)
             {

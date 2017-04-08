@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Farfetch.Domain.Entities.Base;
 
@@ -17,6 +18,8 @@ namespace Farfetch.Application.Interfaces.Base
         Task DeleteAsync(IEnumerable<TEntity> entities);
 
         Task<TEntity> GetAsync(TId id);
+
+        Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> filter);
 
         Task<IEnumerable<TEntity>> GetAllAsync(string ordering = null, bool ascending = true);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Farfetch.Application.Interfaces.Base;
 using Farfetch.CrossCutting.Exceptions.Base;
@@ -50,6 +51,13 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
         {
             return await collection
                 .Find(e => e.Id.Equals(id))
+                .FirstOrDefaultAsync();
+        }
+
+        public virtual async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return await collection
+                .Find(filter)
                 .FirstOrDefaultAsync();
         }
 
