@@ -12,5 +12,20 @@ namespace farfetch.web.Controllers
         {
             return View();
         }
+
+        public IActionResult items()
+        {
+            return View();
+        }
+
+        public IActionResult categories()
+        {
+            return View();
+        }
+
+        public IActionResult orders()
+        {
+            return View();
+        }
     }
 }
