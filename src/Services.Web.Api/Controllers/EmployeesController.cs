@@ -13,6 +13,7 @@ using Farfetch.CrossCutting.ExtensionMethods;
 using Farfetch.CrossCutting.Resources.Validations;
 using Farfetch.Domain.Entities.Base;
 using Farfetch.Domain.Entities.Corporate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 

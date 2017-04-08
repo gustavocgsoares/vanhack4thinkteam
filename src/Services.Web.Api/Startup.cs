@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Farfetch.Application.Contexts.Corporate;
 using Farfetch.Application.Interfaces.Corporate;
 using Farfetch.Data.Repositories.Corporate;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Swagger;
@@ -145,6 +148,42 @@ namespace Farfetch.Services.Web.Api
                 // Provide client ID, client ID, realm and application name
                 ////c.ConfigureOAuth2("swagger-ui", "swagger-ui-secret", "swagger-ui-realm", "Swagger UI");
             });
+
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value));
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = Configuration.GetSection("TokenAuthentication:Issuer").Value,
+
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = Configuration.GetSection("TokenAuthentication:Audience").Value,
+
+                // Validate the token expiry
+                ValidateLifetime = true,
+
+                // If you want to allow a certain amount of clock drift, set that here:
+                ClockSkew = TimeSpan.Zero
+            };
+
+            var jwtBearerOptions = new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
+                TokenValidationParameters = tokenValidationParameters
+            };
+
+            ////jwtBearerOptions.SecurityTokenValidators.Clear();
+            ////jwtBearerOptions.SecurityTokenValidators.Add(new TicketDataFormatTokenValidator());
+
+            app.UseJwtBearerAuthentication(jwtBearerOptions);
 
             app.UseMvc(routes =>
             {
