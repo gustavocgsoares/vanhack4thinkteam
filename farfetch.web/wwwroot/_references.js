@@ -1,4 +1,7 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/farfetch.js" />
+/// <reference path="js/farfetch/admin.js" />
+/// <reference path="js/farfetch/customer.js" />
 /// <reference path="js/scripts.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/vendor/bootstrap.min.js" />

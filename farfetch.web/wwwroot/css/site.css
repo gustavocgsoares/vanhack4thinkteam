@@ -48,3 +48,14 @@ textarea {
     display: none
   }
 }
+
+/**override btn styling*/
+.btn-primary, .add-to-cart {
+    background-color: black;
+    border-radius:0;
+}
+
+.btn-primary:hover, .add-to-cart:hover{
+    background-color:#424242;
+}
+
