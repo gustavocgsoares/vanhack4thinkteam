@@ -3,29 +3,23 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:55980/",
+      "applicationUrl": "http://localhost:51422/",
       "sslPort": 0
     }
   },
   "profiles": {
-    "farfetch_ecommerce": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:5000/api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "v1/employees",
+      "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "web": {
-      "commandName": "web",
+    "Services.Web.Auth": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000/api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

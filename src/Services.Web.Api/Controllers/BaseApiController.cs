@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farfetch.Services.Web.Api.Controllers
@@ -6,6 +7,7 @@ namespace Farfetch.Services.Web.Api.Controllers
     /// <summary>
     ///
     /// </summary>
+    [Authorize]
     [Controller]
     ////[RequireHttps]
     public abstract class BaseApiController : ApiController
