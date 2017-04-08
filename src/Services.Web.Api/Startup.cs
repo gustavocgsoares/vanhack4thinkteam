@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -105,6 +106,9 @@ namespace Farfetch.Services.Web.Api
                     return versions.Any(v => $"v{v.ToString()}" == docName);
                 });
             });
+
+            ////services.AddSingleton(new MongoClient(Configuration.GetSection("MongoDb:ConnectionString").Value));
+
             services.Configure<CrossCutting.Configurations.Data>(Configuration.GetSection("Data"));
         }
 

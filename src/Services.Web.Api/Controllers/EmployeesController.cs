@@ -8,7 +8,9 @@ using Farfetch.Application.Interfaces.Corporate;
 using Farfetch.Application.Model.Contexts.Base;
 using Farfetch.Application.Model.Contexts.V1.Corporate;
 using Farfetch.Application.Model.Enums.Base;
+using Farfetch.CrossCutting.Exceptions.Base;
 using Farfetch.CrossCutting.ExtensionMethods;
+using Farfetch.CrossCutting.Resources.Validations;
 using Farfetch.Domain.Entities.Base;
 using Farfetch.Domain.Entities.Corporate;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 namespace Farfetch.Services.Web.Api.Controllers
 {
     /// <summary>
-    ///
+    /// Employees APIs
     /// </summary>
     [ApiVersion("1")]
     [Route("v{version:apiVersion}/employees")]
@@ -193,7 +195,7 @@ namespace Farfetch.Services.Web.Api.Controllers
         /// Retrieves a specific employee by unique id
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
-        /// <response code="200">Employee created</response>
+        /// <response code="200">Employee found</response>
         /// <response code="400">Employee has missing/invalid values</response>
         /// <response code="404">Employee not found or not exists</response>
         /// <response code="500">Oops! Can't get your employee right now</response>
@@ -205,138 +207,195 @@ namespace Farfetch.Services.Web.Api.Controllers
         [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> GetById(string id)
         {
-            ////var entity = await _employeeApp.GetAsync(id);
-
-            var entity = new Employee
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = "John Smith Doe",
-                Login = "jsd@domain.com"
-            };
+                var entity = await employeeApp.GetAsync(id);
 
-            if (entity == null)
-            {
-                return NotFound();
+                if (entity.IsNull())
+                {
+                    return NotFound();
+                }
+
+                var model = EmployeeModel.ToModel(entity);
+
+                var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
+                var getByIdlink = GetEmployeeByIdLink(urlHelper, model.Id, true);
+                var deleteLink = DeleteEmployeeLink(urlHelper, model.Id);
+                var updateLink = UpdateEmployeeLink(urlHelper, model.Id);
+
+                model.Links = new List<Link>
+                {
+                    getByIdlink,
+                    updateLink,
+                    deleteLink
+                };
+
+                return Ok(model);
             }
-
-            await Task.Run(() => entity);
-            var model = EmployeeModel.ToModel(entity);
-
-            var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
-            var getByIdlink = GetEmployeeByIdLink(urlHelper, model.Id, true);
-            var deleteLink = DeleteEmployeeLink(urlHelper, model.Id);
-            var updateLink = UpdateEmployeeLink(urlHelper, model.Id);
-
-            model.Links = new List<Link>
+            catch (InvalidParameterException ex)
             {
-                getByIdlink,
-                updateLink,
-                deleteLink
-            };
-
-            return Ok(model);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(new UnpredictableException(ex));
+            }
         }
 
         /// <summary>
-        ///
+        /// Create an employee
         /// </summary>
-        /// <param name="employee"></param>
-        /// <returns></returns>
+        /// <param name="employee">Employee to be created</param>
+        /// <remarks>Awesomeness!</remarks>
+        /// <response code="201">Employee created</response>
+        /// <response code="400">Employee has missing/invalid values</response>
+        /// <response code="409">Employee has conflicting values with existing data. Eg: Email</response>
+        /// <response code="500">Oops! Can't create your employee right now</response>
         [HttpPost]
         [Route("", Name = "CreateEmployee")]
-        [Produces(typeof(EmployeeModel))]
+        [ProducesResponseType(typeof(EmployeeModel), 201)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(void), 409)]
+        [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> Create([FromBody]EmployeeModel employee)
         {
-            if (employee.Email == "conflict@domain.com")
+            try
+            {
+                employee.IsNull().Throw<InvalidParameterException>(string.Format(Messages.CannotBeNull, "employee"));
+
+                var entity = await employeeApp.SaveAsync(employee.ToDomain());
+                var result = EmployeeModel.ToModel(entity);
+
+                ////if (employee.Email == "conflict@domain.com")
+                ////{
+                ////    return Conflict();
+                ////}
+
+                var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
+                var getByIdlink = GetEmployeeByIdLink(urlHelper, result.Id);
+                var deleteLink = DeleteEmployeeLink(urlHelper, result.Id);
+                var updateLink = UpdateEmployeeLink(urlHelper, result.Id);
+
+                result.Links = new List<Link>
+                {
+                    getByIdlink,
+                    updateLink,
+                    deleteLink
+                };
+
+                return new CreatedResult(getByIdlink.Href, result);
+            }
+            catch (InvalidParameterException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (BusinessConflictException)
             {
                 return Conflict();
             }
-
-            var result = new EmployeeModel
+            catch (Exception ex)
             {
-                Id = "234rewr23422",
-                FirstName = "John",
-                LastName = "Smith Doe",
-                Email = "conflict@domain.com"
-            };
-
-            var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
-            var getByIdlink = GetEmployeeByIdLink(urlHelper, result.Id);
-            var deleteLink = DeleteEmployeeLink(urlHelper, result.Id);
-            var updateLink = UpdateEmployeeLink(urlHelper, result.Id);
-
-            result.Links = new List<Link>
-            {
-                getByIdlink,
-                updateLink,
-                deleteLink
-            };
-
-            await Task.Run(() => employee);
-            return new CreatedResult(getByIdlink.Href, result);
+                return InternalServerError(new UnpredictableException(ex));
+            }
         }
 
         /// <summary>
-        ///
+        /// Update an employee
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="employee"></param>
-        /// <returns></returns>
+        /// <param name="id">Employee id to be updated</param>
+        /// <param name="employee">Employee to be updated</param>
+        /// <remarks>Awesomeness!</remarks>
+        /// <response code="200">Employee updated</response>
+        /// <response code="400">Employee has missing/invalid values</response>
+        /// <response code="404">Employee not found</response>
+        /// <response code="409">Employee has conflicting values with existing data. Eg: Email</response>
+        /// <response code="500">Oops! Can't update your employee right now</response>
         [HttpPut]
         [Route("{id}", Name = "UpdateEmployee")]
-        [Produces(typeof(EmployeeModel))]
+        [ProducesResponseType(typeof(EmployeeModel), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(void), 404)]
+        [ProducesResponseType(typeof(void), 409)]
+        [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> Update([FromUri] string id, [FromBody]EmployeeModel employee)
         {
-            if (employee.FirstName == "conflict")
+            try
+            {
+                employee.IsNull().Throw<InvalidParameterException>(string.Format(Messages.CannotBeNull, "employee"));
+
+                employee.Id = id;
+
+                var entity = await employeeApp.SaveAsync(employee.ToDomain());
+                var result = EmployeeModel.ToModel(entity);
+
+                var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
+                var getByIdlink = GetEmployeeByIdLink(urlHelper, result.Id);
+                var updateLink = UpdateEmployeeLink(urlHelper, result.Id, true);
+                var deleteLink = DeleteEmployeeLink(urlHelper, result.Id);
+
+                result.Links = new List<Link>
+                {
+                    getByIdlink,
+                    updateLink,
+                    deleteLink
+                };
+
+                return Ok(result);
+                ////if (employee.FirstName == "conflict")
+                ////{
+                ////    return Conflict();
+                ////}
+                ////else if (employee.FirstName == "notfound")
+                ////{
+                ////    return NotFound();
+                ////}
+            }
+            catch (InvalidParameterException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DataNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (BusinessConflictException)
             {
                 return Conflict();
             }
-            else if (employee.FirstName == "notfound")
+            catch (Exception ex)
             {
-                return NotFound();
+                return InternalServerError(new UnpredictableException(ex));
             }
-
-            var result = new EmployeeModel
-            {
-                Id = "234rewr23422",
-                FirstName = "Jane",
-                LastName = "Smith Doe",
-                Email = "jsd@domain.com"
-            };
-
-            var urlHelper = urlHelperFactory.GetUrlHelper(ControllerContext);
-            var getByIdlink = GetEmployeeByIdLink(urlHelper, result.Id);
-            var updateLink = UpdateEmployeeLink(urlHelper, result.Id, true);
-            var deleteLink = DeleteEmployeeLink(urlHelper, result.Id);
-
-            result.Links = new List<Link>
-            {
-                getByIdlink,
-                updateLink,
-                deleteLink
-            };
-
-            await Task.Run(() => employee);
-            return Ok(result);
         }
 
         /// <summary>
-        ///
+        /// Delete an employee
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Employee id to be deleted</param>
+        /// <remarks>Awesomeness!</remarks>
+        /// <response code="204">Employee deleted</response>
+        /// <response code="400">Employee has missing/invalid values</response>
+        /// <response code="500">Oops! Can't create your employee right now</response>
         [HttpDelete]
         [Route("{id}", Name = "DeleteEmployee")]
+        [ProducesResponseType(typeof(void), 204)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == "notfound")
+            try
             {
-                return NotFound();
+                await employeeApp.DeleteAsync(id);
+                return StatusCode(HttpStatusCode.NoContent);
             }
-
-            await Task.Run(() => id);
-
-            return StatusCode(HttpStatusCode.NoContent);
+            catch (InvalidParameterException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(new UnpredictableException(ex));
+            }
         }
         #endregion
     }

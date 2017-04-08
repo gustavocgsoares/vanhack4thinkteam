@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EXC_EMPTY_LIST" xml:space="preserve">
-    <value>A lista de objetos '{0}' não pode estar vazia.</value>
+    <value>The list of objects '{0}' can't be empty.</value>
   </data>
   <data name="EXC_FALSE_VALUE" xml:space="preserve">
-    <value>O objeto ou expressão não pode ter valor falso.</value>
+    <value>The object or expression can't be false value.</value>
   </data>
   <data name="EXC_HAS_NULL_OBJECT" xml:space="preserve">
-    <value>A lista de objetos '{0}' contém objetos nulos.</value>
+    <value>The list '{0}' has null object.</value>
   </data>
   <data name="EXC_LIST_NULL_OR_EMPTY" xml:space="preserve">
-    <value>A lista de objetos '{0}' não pode ser nula ou vazia.</value>
+    <value>The list '{0}' can't be null or empty.</value>
   </data>
   <data name="EXC_NOT_NULL_OBJECT" xml:space="preserve">
-    <value>O objeto '{0}' deve ser nulo.</value>
+    <value>The object '{0}' must be null.</value>
   </data>
   <data name="EXC_NULL_OBJECT" xml:space="preserve">
-    <value>O objeto '{0}' não pode ser nulo.</value>
+    <value>The object '{0}' can't be null.</value>
   </data>
   <data name="EXC_OUT_OF_RANGE" xml:space="preserve">
-    <value>O objeto '{0}' está fora do intervalo: min '{1}'; max '{2}'.</value>
+    <value>The object '{0}' is out of range: min '{1}'; max '{2}'.</value>
   </data>
   <data name="EXC_STRING_NULL_OR_EMPTY" xml:space="preserve">
-    <value>O texto '{0}' não pode ser nulo ou vazio.</value>
+    <value>The string '{0}' can't be null or empty.</value>
   </data>
   <data name="EXC_UNSUPPORTED_GENERICS_TYPE" xml:space="preserve">
-    <value>Tipo genérico '{0}' não suportado.</value>
+    <value>Unsupported generics type '{0}'.</value>
   </data>
 </root>

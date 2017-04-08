@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Farfetch.Application.Interfaces.Base;
+using Farfetch.CrossCutting.Exceptions.Base;
+using Farfetch.Data.MongoDb.Helpers;
 using Farfetch.Domain.Entities.Base;
-using MongoDB.Bson;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Farfetch.Data.MongoDb.Repositories.Base
@@ -22,10 +26,16 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
         #endregion
 
         #region Constructors | Destructors
-        public MongoDbRepository(string collectionName)
+        static MongoDbRepository()
         {
-            client = new MongoClient();
-            database = client.GetDatabase("test");
+            ClassMapHelper.RegisterConventionPacks();
+            ClassMapHelper.SetupClassMap<TEntity, TId>();
+        }
+
+        public MongoDbRepository(IOptions<CrossCutting.Configurations.Data> data, string collectionName)
+        {
+            client = new MongoClient(data.Value.MongoDb.ConnectionString);
+            database = client.GetDatabase(data.Value.MongoDb.Database);
             collection = database.GetCollection<TEntity>(collectionName);
         }
 
@@ -33,69 +43,81 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
         {
             Dispose(false);
         }
-
-        public Task DeleteAsync(IEnumerable<TEntity> entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region IRepository Members
         public virtual async Task<TEntity> GetAsync(TId id)
         {
             return await collection
-                .Find(new BsonDocument { { "_id", new ObjectId(id.ToString()) } })
-                .FirstAsync();
+                .Find(e => e.Id.Equals(id))
+                .FirstOrDefaultAsync();
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(string ordering = null, bool ascending = true)
         {
-            return await collection
-                .Find(new BsonDocument())
+            ////TODO: ordering field
+
+            var query = collection.Find(e => true);
+
+            return ascending
+                 ? await query.SortBy(e => e.Id).ToListAsync()
+                 : await query.SortByDescending(e => e.Id).ToListAsync();
+        }
+
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(int index, int limit, string ordering = null, bool ascending = true)
+        {
+            ////TODO: ordering field
+
+            long totalItems = 0;
+
+            var query = collection.Find(e => true);
+
+            query = ascending
+                  ? query.SortBy(e => e.Id)
+                  : query.SortByDescending(e => e.Id);
+
+            totalItems = query.Count();
+
+            var result = await query
+                .Skip(index)
+                .Limit(limit)
                 .ToListAsync();
+
+            return new PagedList<TEntity>
+            {
+                Offset = index,
+                Limit = limit,
+                Items = query.ToList(),
+                Total = totalItems
+            };
         }
 
-        public virtual Task<PagedList<TEntity>> GetAllAsync(int index, int quantity, string ordering = null, bool ascending = true)
+        public virtual async Task<IEnumerable<TEntity>> SaveAsync(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
-        }
-
-        ////public List<PostModel> Filter(string jsonQuery)
-        ////{
-        ////    var queryDoc = new QueryDocument(BsonSerializer.Deserialize<BsonDocument>(jsonQuery));
-        ////    return _collection.Find<PostModel>(queryDoc).ToList();
-        ////}
-
-        public virtual Task<int> GetAllPagedItemsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual Task<IEnumerable<TEntity>> SaveAsync(IEnumerable<TEntity> entity)
-        {
-            throw new NotImplementedException();
+            await entities.AsQueryable().ForEachAsync(async e => await SaveAsync(e));
+            return entities;
         }
 
         public virtual async Task<TEntity> SaveAsync(TEntity entity)
         {
             if (entity.IsTransient())
             {
-                await collection.InsertOneAsync(entity, null);
-                return await GetAsync(entity.Id);
+                return await CreateAsync(entity);
             }
             else
             {
-                ////entity.Id = new ObjectId(entity.Id);
-
-                var filter = Builders<TEntity>.Filter.Eq(s => s.Id, entity.Id);
-                await collection.ReplaceOneAsync(filter, entity, null);
-                return await GetAsync(entity.Id);
+                return await UpdateAsync(entity);
             }
+        }
+
+        public async Task DeleteAsync(IEnumerable<TEntity> entities)
+        {
+            await entities.AsQueryable().ForEachAsync(async e => await DeleteAsync(e));
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            await collection.FindOneAndDeleteAsync(e => e.Id.Equals(entity.Id));
         }
         #endregion
 
@@ -118,6 +140,65 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
             }
 
             disposed = true;
+        }
+        #endregion
+
+        #region Private methods
+        private async Task<TEntity> CreateAsync(TEntity entity)
+        {
+            try
+            {
+                await collection.InsertOneAsync(entity, null);
+                return await GetAsync(entity.Id);
+            }
+            catch (MongoWriteException)
+            {
+                throw new BusinessConflictException("Insert failed because the entity already exists!");
+            }
+        }
+
+        private async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            var previuosVersion = entity.Version;
+            entity.Version++;
+
+            ReplaceOneResult result;
+
+            //// -> Find entity with same Id
+            var idFilter = Builders<TEntity>.Filter.Eq(e => e.Id, entity.Id);
+
+            //// -> Consistency enforcement
+            if (!IgnoreVersion())
+            {
+                var versionLowerThan = Builders<TEntity>.Filter.Lt(e => e.Version, entity.Version);
+
+                //// -> Consistency enforcement: Where current._id = entity.Id AND entity.Version > current.Version
+                result = await collection.ReplaceOneAsync(
+                    Builders<TEntity>.Filter.And(idFilter, versionLowerThan),
+                    entity,
+                    null);
+
+                if (result != null && ((result.IsAcknowledged && result.MatchedCount == 0) || (result.IsModifiedCountAvailable && !(result.ModifiedCount > 0))))
+                {
+                    throw new BusinessConflictException("Update failed because entity versions conflict!");
+                }
+            }
+            else
+            {
+                result = await collection.ReplaceOneAsync(idFilter, entity, null);
+
+                if (result != null && ((result.IsAcknowledged && result.MatchedCount == 0) || (result.IsModifiedCountAvailable && !(result.ModifiedCount > 0))))
+                {
+                    throw new DataNotFoundException(entity.Id.ToString());
+                }
+            }
+
+            return await GetAsync(entity.Id);
+        }
+
+        private bool IgnoreVersion()
+        {
+            return false;
         }
         #endregion
     }

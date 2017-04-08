@@ -78,7 +78,7 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Cache &apos;{0}&apos; não encontrado..
+        ///    Looks up a localized string similar to Cache &apos;{0}&apos; cannot be found..
         /// </summary>
         public static string CacheNotFoundException {
             get {
@@ -87,7 +87,7 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Valor &apos;{0}&apos; não encontrado no cache..
+        ///    Looks up a localized string similar to Cache value &apos;{0}&apos; cannot be found..
         /// </summary>
         public static string CacheValueNotFoundException {
             get {
@@ -96,7 +96,16 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Parâmetros estão inválidos ou incorretos:
+        ///    Looks up a localized string similar to Data &apos;{0}&apos; cannot be found..
+        /// </summary>
+        public static string DataNotFoundException {
+            get {
+                return ResourceManager.GetString("DataNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Parameters are invalid or incorrect:
         ///{0}.
         /// </summary>
         public static string InvalidParameterException {
@@ -106,7 +115,7 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Key &apos;{0}&apos; não encontrado..
+        ///    Looks up a localized string similar to Key &apos;{0}&apos; cannot be found..
         /// </summary>
         public static string KeyNotFoundException {
             get {
@@ -115,7 +124,7 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Requisição já processada.
+        ///    Looks up a localized string similar to Request already processed.
         ///{0}.
         /// </summary>
         public static string RequestAlreadyProcessedException {
@@ -125,8 +134,8 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Acesso negado.
-        ///Por favor, contate o administrador do sistema..
+        ///    Looks up a localized string similar to Access denied.
+        ///Please contact the System Administrator..
         /// </summary>
         public static string ServiceAccessDeniedException {
             get {
@@ -135,7 +144,7 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Assinatura não localizada para os dados informados. Provedor: {0} Acordo: {1} SiglaProduto:{2}.
+        ///    Looks up a localized string similar to Signature not found for data informated. Provider: {0} Agreement: {1} ArlineCode: {2}.
         /// </summary>
         public static string SignatureNotFoundException {
             get {
@@ -144,8 +153,8 @@ namespace Farfetch.CrossCutting.Resources.Exceptions.Base {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Ocorreu um erro inesperado.
-        ///Por favor, contate o administrador do sistema..
+        ///    Looks up a localized string similar to An unexpected error occurred. 
+        ///Please contact the System Administrator..
         /// </summary>
         public static string UnpredictableException {
             get {

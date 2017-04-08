@@ -60,7 +60,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} e {1} não podem ser preenchidos simultaneamente..
+        ///    Looks up a localized string similar to {0} and {1} cannot be filled simultaneously..
         /// </summary>
         public static string CannotBeFilledSimultaneously {
             get {
@@ -69,7 +69,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} não pode ser nulo..
+        ///    Looks up a localized string similar to {0} cannot be null..
         /// </summary>
         public static string CannotBeNull {
             get {
@@ -78,7 +78,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} não pode ser nulo ou vazio..
+        ///    Looks up a localized string similar to {0} cannot be null or empty..
         /// </summary>
         public static string CannotBeNullOrEmpty {
             get {
@@ -87,7 +87,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} ou {1} deve ter valor preenchido..
+        ///    Looks up a localized string similar to {0} or {1} must have value filled..
         /// </summary>
         public static string ConditionalFillParameter {
             get {
@@ -96,7 +96,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser maior do que {1}..
+        ///    Looks up a localized string similar to {0} must be greater than {1}..
         /// </summary>
         public static string GreaterThan {
             get {
@@ -105,7 +105,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser maior ou igual a {1}..
+        ///    Looks up a localized string similar to {0} must be greater than or equal to {1}..
         /// </summary>
         public static string GreaterThanOrEqualTo {
             get {
@@ -114,7 +114,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser maior ou igual a zero..
+        ///    Looks up a localized string similar to {0} must be greater than or equal to zero..
         /// </summary>
         public static string GreaterThanOrEqualToZero {
             get {
@@ -123,7 +123,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser maior do que zero..
+        ///    Looks up a localized string similar to {0} must be greater than zero..
         /// </summary>
         public static string GreaterThanZero {
             get {
@@ -132,7 +132,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} é um valor inválido..
+        ///    Looks up a localized string similar to {0} is an invalid data..
         /// </summary>
         public static string InvalidData {
             get {
@@ -141,7 +141,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser no formato &apos;{1}&apos;..
+        ///    Looks up a localized string similar to {0} must be &apos;{1}&apos; format..
         /// </summary>
         public static string InvalidDataFormat {
             get {
@@ -150,7 +150,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} é uma data inválida..
+        ///    Looks up a localized string similar to {0} is an invalid dateInvalidDate.
         /// </summary>
         public static string InvalidDate {
             get {
@@ -159,7 +159,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} está com formato inválido: &apos;{1}&apos; - &apos;{2}&apos;..
+        ///    Looks up a localized string similar to {0} is in invalid format: &apos;{1}&apos; - &apos;{2}&apos;..
         /// </summary>
         public static string InvalidDateFormat {
             get {
@@ -168,7 +168,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve conter apenas números inteiros..
+        ///    Looks up a localized string similar to {0} must contain only integers..
         /// </summary>
         public static string InvalidTypeNumber {
             get {
@@ -177,7 +177,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} é um e-mail inválido..
+        ///    Looks up a localized string similar to {0} is an invalid email..
         /// </summary>
         public static string IsInvalidEmail {
             get {
@@ -186,7 +186,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser menor do que {1}..
+        ///    Looks up a localized string similar to {0} must be less than {1}..
         /// </summary>
         public static string LessThan {
             get {
@@ -195,7 +195,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser menor ou igual a {1}..
+        ///    Looks up a localized string similar to {0} must be less than or equal to {1}..
         /// </summary>
         public static string LessThanOrEqualTo {
             get {
@@ -204,7 +204,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser menor ou igual a zero..
+        ///    Looks up a localized string similar to {0} must be less than or equal to zero..
         /// </summary>
         public static string LessThanOrEqualToZero {
             get {
@@ -213,7 +213,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser menor do que zero..
+        ///    Looks up a localized string similar to {0} must be less than zero..
         /// </summary>
         public static string LessThanZero {
             get {
@@ -222,7 +222,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} contém um e-mail inválido: &apos;{1}&apos;..
+        ///    Looks up a localized string similar to {0} have invalid email: &apos;{1}&apos;..
         /// </summary>
         public static string ListHaveInvalidEmail {
             get {
@@ -231,7 +231,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} deve ser informado..
+        ///    Looks up a localized string similar to {0} must be informed..
         /// </summary>
         public static string MustBeInformed {
             get {
@@ -240,7 +240,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} teve ter um tamanho fixo: &apos;{1}&apos;..
+        ///    Looks up a localized string similar to {0} must have fixed size: &apos;{1}&apos;..
         /// </summary>
         public static string MustHaveFixedSize {
             get {
@@ -249,7 +249,7 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} está fora do intervalo: mínimo = &apos;{1}&apos; e máximo = &apos;{2}&apos;..
+        ///    Looks up a localized string similar to {0} is out of range: min = &apos;{1}&apos; and max = &apos;{2}&apos;..
         /// </summary>
         public static string OutOfRange {
             get {

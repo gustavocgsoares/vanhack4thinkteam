@@ -18,7 +18,7 @@ namespace Farfetch.Domain.Entities.Base
 
         public ICollection<TEntity> Items { get; set; }
 
-        public int Total { get; set; }
+        public long Total { get; set; }
         #endregion
     }
 }

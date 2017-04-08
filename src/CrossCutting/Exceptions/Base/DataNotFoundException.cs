@@ -6,7 +6,7 @@ namespace Farfetch.CrossCutting.Exceptions.Base
     {
         #region Constructors | Destructors
         public DataNotFoundException(string data)
-            : base(Messages.KeyNotFoundException, data)
+            : base(Messages.DataNotFoundException, data)
         {
         }
         #endregion

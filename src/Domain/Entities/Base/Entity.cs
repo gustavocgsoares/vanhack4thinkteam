@@ -16,6 +16,7 @@ namespace Farfetch.Domain.Entities.Base
         #region Constructors | Destructors
         public Entity()
         {
+            ////Metadata = new Dictionary<string, object>();
             Advices = new List<string>();
         }
         #endregion
@@ -31,10 +32,14 @@ namespace Farfetch.Domain.Entities.Base
 
         public virtual string IPAddress { get; set; }
 
+        public virtual long Version { get; set; }
+
         public virtual bool Active { get; set; }
 
+        ////public virtual IDictionary<string, object> Metadata { get; set; }
+
         [NotMapped]
-        public List<string> Advices { get; set; }
+        public virtual List<string> Advices { get; set; }
         #endregion
 
         #region Public methods

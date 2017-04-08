@@ -1,4 +1,6 @@
+using System;
 using Farfetch.Application.Model.Contexts.Base;
+using Farfetch.CrossCutting.ExtensionMethods;
 using Farfetch.Domain.Entities.Corporate;
 
 namespace Farfetch.Application.Model.Contexts.V1.Corporate
@@ -22,7 +24,6 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
         {
             var model = Instance();
 
-            ////model.Meta = new Link { Href = url };
             return ToModel(entity, model);
         }
 
@@ -47,6 +48,7 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
         {
             entity = entity ?? new Employee();
 
+            entity.Id = Id.HasValue() ? Id.To<Guid>() : default(Guid);
             entity.Name = FirstName;
             entity.Surname = LastName;
             entity.Login = Email;

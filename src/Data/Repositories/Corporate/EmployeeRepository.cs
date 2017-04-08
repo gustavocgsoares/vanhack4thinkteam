@@ -2,6 +2,7 @@
 using Farfetch.Application.Interfaces.Corporate;
 using Farfetch.Data.MongoDb.Repositories.Base;
 using Farfetch.Domain.Entities.Corporate;
+using Microsoft.Extensions.Options;
 
 namespace Farfetch.Data.Repositories.Corporate
 {
@@ -9,8 +10,8 @@ namespace Farfetch.Data.Repositories.Corporate
         : MongoDbRepository<Employee, Guid>, IEmployeeRepository
     {
         #region Constructors | Destructors
-        public EmployeeRepository()
-            : base("employees")
+        public EmployeeRepository(IOptions<CrossCutting.Configurations.Data> data)
+            : base(data, "employees")
         {
         }
         #endregion

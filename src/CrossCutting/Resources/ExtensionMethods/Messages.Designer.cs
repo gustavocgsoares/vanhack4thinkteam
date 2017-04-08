@@ -60,7 +60,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to A lista de objetos &apos;{0}&apos; não pode estar vazia..
+        ///    Looks up a localized string similar to The list of objects &apos;{0}&apos; can&apos;t be empty..
         /// </summary>
         public static string EXC_EMPTY_LIST {
             get {
@@ -69,7 +69,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to O objeto ou expressão não pode ter valor falso..
+        ///    Looks up a localized string similar to The object or expression can&apos;t be false value..
         /// </summary>
         public static string EXC_FALSE_VALUE {
             get {
@@ -78,7 +78,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to A lista de objetos &apos;{0}&apos; contém objetos nulos..
+        ///    Looks up a localized string similar to The list &apos;{0}&apos; has null object..
         /// </summary>
         public static string EXC_HAS_NULL_OBJECT {
             get {
@@ -87,7 +87,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to A lista de objetos &apos;{0}&apos; não pode ser nula ou vazia..
+        ///    Looks up a localized string similar to The list &apos;{0}&apos; can&apos;t be null or empty..
         /// </summary>
         public static string EXC_LIST_NULL_OR_EMPTY {
             get {
@@ -96,7 +96,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to O objeto &apos;{0}&apos; deve ser nulo..
+        ///    Looks up a localized string similar to The object &apos;{0}&apos; must be null..
         /// </summary>
         public static string EXC_NOT_NULL_OBJECT {
             get {
@@ -105,7 +105,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to O objeto &apos;{0}&apos; não pode ser nulo..
+        ///    Looks up a localized string similar to The object &apos;{0}&apos; can&apos;t be null..
         /// </summary>
         public static string EXC_NULL_OBJECT {
             get {
@@ -114,7 +114,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to O objeto &apos;{0}&apos; está fora do intervalo: min &apos;{1}&apos;; max &apos;{2}&apos;..
+        ///    Looks up a localized string similar to The object &apos;{0}&apos; is out of range: min &apos;{1}&apos;; max &apos;{2}&apos;..
         /// </summary>
         public static string EXC_OUT_OF_RANGE {
             get {
@@ -123,7 +123,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to O texto &apos;{0}&apos; não pode ser nulo ou vazio..
+        ///    Looks up a localized string similar to The string &apos;{0}&apos; can&apos;t be null or empty..
         /// </summary>
         public static string EXC_STRING_NULL_OR_EMPTY {
             get {
@@ -132,7 +132,7 @@ namespace Farfetch.CrossCutting.Resources.ExtensionMethods {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Tipo genérico &apos;{0}&apos; não suportado..
+        ///    Looks up a localized string similar to Unsupported generics type &apos;{0}&apos;..
         /// </summary>
         public static string EXC_UNSUPPORTED_GENERICS_TYPE {
             get {
