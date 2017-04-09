@@ -5,6 +5,7 @@
 /// <reference path="js/farfetch.js" />
 /// <reference path="js/farfetch/admin.js" />
 /// <reference path="js/farfetch/customer.js" />
+/// <reference path="js/farfetch/items.js" />
 /// <reference path="js/flot-charts/bar-chart.js" />
 /// <reference path="js/flot-charts/curved-line-chart.js" />
 /// <reference path="js/flot-charts/dynamic-chart.js" />

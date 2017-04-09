@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "items";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<section id="content">
+    <div class="container">
+        <div class="c-header">
+            <h2>Stock</h2>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2>
+                    Items in Stock
+                    <small>View list of items in store</small>
+                </h2>
+                <button class="btn palette-Light-Green bg btn-float waves-effect waves-circle waves-float"><i class="zmdi zmdi-plus"></i></button>
+            </div>
+
+            <table id="data-table-command" class="table table-striped table-vmiddle">
+                <thead>
+                    <tr>
+                       
+                        <th data-column-id="id" data-type="numeric">ID</th>
+                        <th data-column-id="sender">Sender</th>
+                        <th data-column-id="received" data-order="desc">Received</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                       
+                        
+                        <td>10238</td>
+                        <td>eduardo@pingpong.com</td>
+                        <td>14.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>10243</td>
+                        <td>eduardo@pingpong.com</td>
+                        <td>19.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>10248</td>
+                        <td>eduardo@pingpong.com</td>
+                        <td>24.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>10253</td>
+                        <td>eduardo@pingpong.com</td>
+                        <td>29.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>10234</td>
+                        <td>lila@google.com</td>
+                        <td>10.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>10239</td>
+                        <td>lila@google.com</td>
+                        <td>15.10.2013</td>
+                        <td class="text-left" style=""><button type="button" class="btn btn-icon command-edit waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-edit"></span></button> <button type="button" class="btn btn-icon command-delete waves-effect waves-circle" data-row-id="10253"><span class="zmdi zmdi-delete"></span></button></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+
