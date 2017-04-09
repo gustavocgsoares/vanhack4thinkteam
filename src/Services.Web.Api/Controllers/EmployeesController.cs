@@ -330,7 +330,7 @@ namespace Farfetch.Services.Web.Api.Controllers
         [ProducesResponseType(typeof(void), 404)]
         [ProducesResponseType(typeof(void), 409)]
         [ProducesResponseType(typeof(void), 500)]
-        public async Task<IActionResult> Update([FromUri] string id, [FromBody]EmployeeModel employee)
+        public async Task<IActionResult> Update(string id, [FromBody]EmployeeModel employee)
         {
             try
             {

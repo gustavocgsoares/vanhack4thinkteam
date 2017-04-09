@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
 using MongoDB.Driver;
@@ -22,33 +24,27 @@ namespace Farfetch.Services.Web.Api
         /// <param name="services">Service collection to be configured.</param>
         private void ConfigureSwagger(IServiceCollection services)
         {
+            // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", GetSwaggerInfo());
 
                 c.DescribeAllEnumsAsStrings();
-                ////c.OperationFilter<AuthResponsesOperationFilter>();
+                c.DocInclusionPredicate(ResolveDocInclusionPredicate);
 
-                c.DocInclusionPredicate((docName, apiDesc) =>
-                {
-                    var versions = apiDesc.ControllerAttributes()
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions);
-
-                    var values = apiDesc.RelativePath
-                        .Split('/')
-                        .Select(v => v.Replace("v{version}", docName));
-
-                    apiDesc.RelativePath = string.Join("/", values);
-
-                    return versions.Any(v => $"v{v.ToString()}" == docName);
-                });
-
-                ////// Set the comments path for the swagger json and ui.
-                ////var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                ////var xmlPath = Path.Combine(basePath, "Services.Web.Api.xml");
-                ////c.IncludeXmlComments(xmlPath);
+                // Set the comments path for the swagger json and ui.
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "Services.Web.Api.xml");
+                c.IncludeXmlComments(xmlPath);
             });
+
+            if (hostingEnv.IsDevelopment())
+            {
+                ////services.ConfigureSwaggerGen(c =>
+                ////{
+                ////    c.IncludeXmlComments(GetXmlCommentsPath(PlatformServices.Default.Application));
+                ////});
+            }
         }
 
         /// <summary>
@@ -57,27 +53,28 @@ namespace Farfetch.Services.Web.Api
         /// <param name="app">Application builder to be configured.</param>
         private void ConfigureSwagger(IApplicationBuilder app)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger(options =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                options.RouteTemplate = "api-docs/{documentName}/apis.json";
+                options.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
             });
 
-            ////app.UseSwaggerUI(options =>
-            ////{
-            ////    options.RoutePrefix = "docs";
-            ////    options.SwaggerEndpoint("../v1/swagger.json", "My API V1");
-            ////    ////options.SwaggerEndpoint("/v1/swagger.json", "Farfetch APIs - v1");
-            ////    options.EnabledValidator();
-            ////    options.BooleanValues(new object[] { 0, 1 });
-            ////    options.DocExpansion("full");
-            ////    options.SupportedSubmitMethods(new[] { "get", "post", "put", "delete" });
-            ////    options.ShowRequestHeaders();
-            ////    options.ShowJsonEditor();
-            ////    ////options.InjectStylesheet("/swagger-ui/custom.css");
-            ////    // Provide client ID, client ID, realm and application name
-            ////    ////options.ConfigureOAuth2("swagger-ui", "swagger-ui-secret", "swagger-ui-realm", "Swagger UI");
-            ////});
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(options =>
+            {
+                options.RoutePrefix = "docs";
+                options.SwaggerEndpoint("/api-docs/v1/apis.json", "Farfetch APIs - v1");
+                options.EnabledValidator();
+                options.BooleanValues(new object[] { 0, 1 });
+                options.DocExpansion("none");
+                options.SupportedSubmitMethods(new[] { "get", "post", "put", "delete" });
+                options.ShowRequestHeaders();
+                options.ShowJsonEditor();
+                ////options.InjectStylesheet("/swagger-ui/custom.css");
+                // Provide client ID, client ID, realm and application name
+                ////options.ConfigureOAuth2("swagger-ui", "swagger-ui-secret", "swagger-ui-realm", "Swagger UI");
+            });
         }
 
         /// <summary>
@@ -94,7 +91,7 @@ namespace Farfetch.Services.Web.Api
                 TermsOfService = "Knock yourself out",
                 Contact = new Contact
                 {
-                    Name = "We are Developer",
+                    Name = "4 Think Team",
                     Email = "we.are.developer@farfetch.com"
                 },
                 License = new License
@@ -103,6 +100,38 @@ namespace Farfetch.Services.Web.Api
                     Url = "http://url.com"
                 }
             };
+        }
+
+        /// <summary>
+        /// Resolving api version constraint.
+        /// </summary>
+        /// <param name="docName">docName parameter.</param>
+        /// <param name="apiDesc">Api description.</param>
+        /// <returns>Return if version exists.</returns>
+        private bool ResolveDocInclusionPredicate(string docName, ApiDescription apiDesc)
+        {
+            var values = apiDesc.RelativePath
+                        .Split('/')
+                        .Select(v => v.Replace("v{version}", docName));
+
+            apiDesc.RelativePath = string.Join("/", values);
+
+            var versionParameter = apiDesc.ParameterDescriptions
+                .SingleOrDefault(p => p.Name == "version");
+
+            if (versionParameter != null)
+            {
+                apiDesc.ParameterDescriptions.Remove(versionParameter);
+            }
+
+            var versions = apiDesc.ControllerAttributes()
+                .OfType<ApiVersionAttribute>()
+                .SelectMany(attr => attr.Versions);
+
+            return versions.Any(v =>
+            {
+                return $"v{v.ToString()}" == docName;
+            });
         }
 
         /// <summary>

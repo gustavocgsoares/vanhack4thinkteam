@@ -80,7 +80,7 @@ namespace Farfetch.Services.Web.Api.Controllers
             {
                 Links = new List<Link>
                 {
-                    UsersController.GetUserByIdLink(urlHelper, "rwer3453erw")
+                    ////UsersController.GetUserByIdLink(urlHelper, "rwer3453erw")
                 }
             };
 
@@ -125,7 +125,7 @@ namespace Farfetch.Services.Web.Api.Controllers
             {
                 Links = new List<Link>
                 {
-                    UsersController.GetUserByIdLink(urlHelper, "rwer3453erw")
+                    ////UsersController.GetUserByIdLink(urlHelper, "rwer3453erw")
                 }
             };
 
@@ -185,10 +185,10 @@ namespace Farfetch.Services.Web.Api.Controllers
         [ProducesResponseType(typeof(void), 404)]
         [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> ChangePassword(
-            [FromUri] string userId,
-            [FromUri] string pass,
-            [FromUri] string newPass,
-            [FromUri] string newPassConfirm)
+            string userId,
+            string pass,
+            string newPass,
+            string newPassConfirm)
         {
             if (newPass != newPassConfirm)
             {
@@ -224,9 +224,9 @@ namespace Farfetch.Services.Web.Api.Controllers
         [ProducesResponseType(typeof(void), 404)]
         [ProducesResponseType(typeof(void), 500)]
         public async Task<IActionResult> ChangePasswordByToken(
-            [FromUri] string newPass,
-            [FromUri] string newPassConfirm,
-            [FromUri] string token)
+            string newPass,
+            string newPassConfirm,
+            string token)
         {
             newPass.IsNullOrEmpty().Throw<InvalidParameterException>(string.Format(Messages.CannotBeNullOrEmpty, "newPass"));
 

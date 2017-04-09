@@ -15,11 +15,18 @@ namespace Farfetch.Services.Web.Api
     public partial class Startup
     {
         /// <summary>
+        /// Hosting environment.
+        /// </summary>
+        private IHostingEnvironment hostingEnv;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="env">Hosting environment to specific configuration, if exists.</param>
         public Startup(IHostingEnvironment env)
         {
+            hostingEnv = env;
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
