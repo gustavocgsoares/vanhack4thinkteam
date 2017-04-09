@@ -10,7 +10,6 @@ customer.addToCart = function(item){
    
 }
 
-
 customer.removeFromCart = function (item_id) {
     //remove item id from cart and update cart
 }
@@ -19,6 +18,9 @@ customer.createOrder = function (order) {
     //a new order is created after checkout
 }
 
-customer.createCustomer = function (customer) {
+customer.createCustomer = function (_customer) {
     //add a new customer
+    alert(_customer.firstname);
 }
+
+
