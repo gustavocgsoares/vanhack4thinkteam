@@ -18,3 +18,7 @@ customer.removeFromCart = function (item_id) {
 customer.createOrder = function (order) {
     //a new order is created after checkout
 }
+
+customer.createCustomer = function (customer) {
+    //add a new customer
+}

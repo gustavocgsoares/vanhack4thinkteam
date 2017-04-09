@@ -4,4 +4,9 @@
 
 $(function () {
     
+    //Customer
+    //----------------------------------//
+    var newCustomer = {
+
+    }
 })
