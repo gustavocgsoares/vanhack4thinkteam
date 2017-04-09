@@ -8,7 +8,7 @@ namespace farfetch.web.Controllers
 {
     public class ItemController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
             return View();
         }
