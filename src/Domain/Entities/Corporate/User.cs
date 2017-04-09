@@ -40,7 +40,7 @@ namespace Farfetch.Domain.Entities.Corporate
         public virtual bool Blocked { get; set; }
         #endregion
 
-        #region Entity Members
+        #region Entity members
         public override void ValidateProperties(Enums.Base.Action action)
         {
             throw new NotImplementedException();

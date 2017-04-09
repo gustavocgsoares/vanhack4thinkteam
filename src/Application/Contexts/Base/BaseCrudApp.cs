@@ -27,7 +27,7 @@ namespace Farfetch.Application.Contexts.Base
         }
         #endregion
 
-        #region IBaseCrudApp Members
+        #region IBaseCrudApp members
         public async Task DeleteAsync(IEnumerable<TEntity> entities)
         {
             bool invalid = false;

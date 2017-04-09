@@ -32,7 +32,7 @@ namespace Farfetch.Domain.Entities.Corporate
         public virtual Guid UpdatingEmployeeId { get; set; }
         #endregion
 
-        #region Entity Members
+        #region Entity members
         public override void ValidateProperties(Enums.Base.Action action)
         {
             throw new NotImplementedException();

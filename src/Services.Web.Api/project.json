@@ -90,5 +90,6 @@
   },
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"
-  }
+  },
+  "userSecretsId": "aspnet-Services.Web.Api-20170408080058"
 }

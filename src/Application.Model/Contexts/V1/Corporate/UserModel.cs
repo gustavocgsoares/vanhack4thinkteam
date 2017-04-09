@@ -38,7 +38,6 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
         {
             var model = Instance();
 
-            ////model.Meta = new Link { Href = url };
             return ToModel(entity, model);
         }
 

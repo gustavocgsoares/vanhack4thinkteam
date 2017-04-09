@@ -20,7 +20,7 @@ namespace Farfetch.Application.Contexts.Base
         }
         #endregion
 
-        #region Disposable Members
+        #region Disposable members
         public void Dispose()
         {
             Dispose(true);

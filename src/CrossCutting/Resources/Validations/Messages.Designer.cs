@@ -69,15 +69,6 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to {0} and {1} cannot be filled simultaneously..
-        /// </summary>
-        public static string CannotBeFilledSimultaneously {
-            get {
-                return ResourceManager.GetString("CannotBeFilledSimultaneously", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///    Looks up a localized string similar to {0} cannot be null..
         /// </summary>
         public static string CannotBeNull {
@@ -92,15 +83,6 @@ namespace Farfetch.CrossCutting.Resources.Validations {
         public static string CannotBeNullOrEmpty {
             get {
                 return ResourceManager.GetString("CannotBeNullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///    Looks up a localized string similar to {0} or {1} must have value filled..
-        /// </summary>
-        public static string ConditionalFillParameter {
-            get {
-                return ResourceManager.GetString("ConditionalFillParameter", resourceCulture);
             }
         }
         

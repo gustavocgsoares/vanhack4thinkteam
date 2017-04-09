@@ -23,7 +23,7 @@ namespace Farfetch.Services.Web.Api
     /// <summary>
     ///
     /// </summary>
-    public class Startup
+    public partial class Startup
     {
         /// <summary>
         ///
@@ -34,7 +34,8 @@ namespace Farfetch.Services.Web.Api
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
             if (env.IsEnvironment("Development"))
             {
@@ -42,7 +43,6 @@ namespace Farfetch.Services.Web.Api
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -63,54 +63,10 @@ namespace Farfetch.Services.Web.Api
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            ////Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
-
-            ////Add service and create Policy with options
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", builder =>
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials());
-            });
-
-            services.AddRouting(opt => opt.LowercaseUrls = true);
-
-            services
-                .AddMvc()
-                .AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                });
-
-            services.AddApiVersioning(o =>
-            {
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.DefaultApiVersion = new ApiVersion(new DateTime(2016, 7, 1));
-            });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", GetSwaggerInfo());
-
-                ////var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "MyApi.xml");
-                ////c.IncludeXmlComments(filePath);
-                c.DescribeAllEnumsAsStrings();
-                c.OperationFilter<AuthResponsesOperationFilter>();
-
-                c.DocInclusionPredicate((docName, apiDesc) =>
-                {
-                    var versions = apiDesc.ControllerAttributes()
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions);
-
-                    return versions.Any(v => $"v{v.ToString()}" == docName);
-                });
-            });
-
-            ////services.AddSingleton(new MongoClient(Configuration.GetSection("MongoDb:ConnectionString").Value));
+            ConfigureLogger(services);
+            ConfigureCors(services);
+            ConfigureSwagger(services);
+            ConfigureApi(services);
 
             services.Configure<CrossCutting.Configurations.Data>(Configuration.GetSection("Data"));
         }
@@ -123,117 +79,11 @@ namespace Farfetch.Services.Web.Api
         /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            ////app.UseApplicationInsightsRequestTelemetry();
-
-            ////app.UseApplicationInsightsExceptionTelemetry();
-
-            ////global policy, if assigned here (it could be defined indvidually for each controller)
-            app.UseCors("CorsPolicy");
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.RoutePrefix = "docs";
-                c.SwaggerEndpoint("/v1/swagger.json", "My API V1");
-                c.EnabledValidator();
-                c.BooleanValues(new object[] { 0, 1 });
-                c.DocExpansion("full");
-                c.SupportedSubmitMethods(new[] { "get", "post", "put", "delete" });
-                c.ShowRequestHeaders();
-                c.ShowJsonEditor();
-                ////c.InjectStylesheet("/swagger-ui/custom.css");
-                // Provide client ID, client ID, realm and application name
-                ////c.ConfigureOAuth2("swagger-ui", "swagger-ui-secret", "swagger-ui-realm", "Swagger UI");
-            });
-
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("TokenAuthentication:SecretKey").Value));
-
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                // The signing key must match!
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-
-                // Validate the JWT Issuer (iss) claim
-                ValidateIssuer = true,
-                ValidIssuer = Configuration.GetSection("TokenAuthentication:Issuer").Value,
-
-                // Validate the JWT Audience (aud) claim
-                ValidateAudience = true,
-                ValidAudience = Configuration.GetSection("TokenAuthentication:Audience").Value,
-
-                // Validate the token expiry
-                ValidateLifetime = true,
-
-                // If you want to allow a certain amount of clock drift, set that here:
-                ClockSkew = TimeSpan.Zero
-            };
-
-            var jwtBearerOptions = new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                AuthenticationScheme = JwtBearerDefaults.AuthenticationScheme,
-                TokenValidationParameters = tokenValidationParameters
-            };
-
-            ////jwtBearerOptions.SecurityTokenValidators.Clear();
-            ////jwtBearerOptions.SecurityTokenValidators.Add(new TicketDataFormatTokenValidator());
-
-            app.UseJwtBearerAuthentication(jwtBearerOptions);
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "api/{version}/{controller}/{id?}");
-            });
-        }
-
-        private Info GetSwaggerInfo()
-        {
-            return new Info
-            {
-                Title = "My API - v1",
-                Version = "v1",
-                Description = "A sample API to demo Swashbuckle",
-                TermsOfService = "Knock yourself out",
-                Contact = new Contact
-                {
-                    Name = "We are Developer",
-                    Email = "we.are.developer@tempuri.org"
-                },
-                License = new License
-                {
-                    Name = "Apache 2.0",
-                    Url = "http://www.apache.org/licenses/LICENSE-2.0.html"
-                }
-            };
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public class AuthResponsesOperationFilter : IOperationFilter
-        {
-            /// <summary>
-            ///
-            /// </summary>
-            /// <param name="operation"></param>
-            /// <param name="context"></param>
-            public void Apply(Operation operation, OperationFilterContext context)
-            {
-                var authAttributes = context.ApiDescription
-                    .ControllerAttributes()
-                    .Union(context.ApiDescription.ActionAttributes())
-                    .OfType<AuthorizeAttribute>();
-
-                if (authAttributes.Any())
-                {
-                    operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-                }
-            }
+            ConfigureLogger(app, loggerFactory);
+            ConfigureCors(app);
+            ConfigureAuth(app);
+            ConfigureSwagger(app);
+            ConfigureApi(app);
         }
     }
 }

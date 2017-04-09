@@ -16,7 +16,7 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
     public abstract class MongoDbRepository<TEntity, TId> : IRepository<TEntity, TId>
         where TEntity : Entity<TEntity, TId>
     {
-        #region Fields
+        #region Fields | Members
         private static IMongoClient client;
 
         private static IMongoDatabase database;
@@ -46,7 +46,7 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
         }
         #endregion
 
-        #region IRepository Members
+        #region IRepository members
         public virtual async Task<TEntity> GetAsync(TId id)
         {
             return await collection
@@ -129,7 +129,7 @@ namespace Farfetch.Data.MongoDb.Repositories.Base
         }
         #endregion
 
-        #region Disposable Members
+        #region Disposable members
         public void Dispose()
         {
             Dispose(true);
