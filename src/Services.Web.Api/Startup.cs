@@ -1,6 +1,9 @@
 ﻿using Farfetch.Application.Contexts.Corporate;
+using Farfetch.Application.Contexts.Product;
 using Farfetch.Application.Interfaces.Corporate;
+using Farfetch.Application.Interfaces.Product;
 using Farfetch.Data.Repositories.Corporate;
+using Farfetch.Data.Repositories.Product;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -53,12 +56,16 @@ namespace Farfetch.Services.Web.Api
         /// <param name="services">Service collection to be configured.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICategoryApp, CategoryApp>();
             services.AddTransient<ICustomerApp, CustomerApp>();
             services.AddTransient<IEmployeeApp, EmployeeApp>();
+            services.AddTransient<IItemApp, ItemApp>();
             services.AddTransient<IUserApp, UserApp>();
 
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             ConfigureLogger(services);

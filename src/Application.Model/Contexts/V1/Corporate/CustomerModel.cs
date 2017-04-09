@@ -34,8 +34,13 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
         #endregion
 
         #region Converters
-        public static CustomerModel ToModel(Customer entity, string url)
+        public static CustomerModel ToModel(Customer entity)
         {
+            if (entity.IsNull())
+            {
+                return null;
+            }
+
             var model = Instance();
 
             return ToModel(entity, model);
@@ -43,6 +48,11 @@ namespace Farfetch.Application.Model.Contexts.V1.Corporate
 
         public static CustomerModel ToModel(Customer entity, CustomerModel model = null)
         {
+            if (entity.IsNull())
+            {
+                return null;
+            }
+
             model = model ?? Instance();
 
             model.Id = entity.Id.ToString();

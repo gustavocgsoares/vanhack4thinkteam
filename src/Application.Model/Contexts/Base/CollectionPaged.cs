@@ -6,7 +6,7 @@ namespace Farfetch.Application.Model.Contexts.Base
     public abstract class CollectionPaged<TListModel> : Resource
         where TListModel : new()
     {
-        public virtual int TotalCount { get; set; }
+        public virtual long TotalCount { get; set; }
 
         public virtual int TotalPages { get; set; }
 
