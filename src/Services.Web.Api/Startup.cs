@@ -53,9 +53,11 @@ namespace Farfetch.Services.Web.Api
         /// <param name="services">Service collection to be configured.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ICustomerApp, CustomerApp>();
             services.AddTransient<IEmployeeApp, EmployeeApp>();
             services.AddTransient<IUserApp, UserApp>();
 
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
