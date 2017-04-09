@@ -1,34 +1,23 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using Farfetch.Application.Contexts.Corporate;
+﻿using Farfetch.Application.Contexts.Corporate;
 using Farfetch.Application.Interfaces.Corporate;
 using Farfetch.Data.Repositories.Corporate;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
-using Newtonsoft.Json.Converters;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Farfetch.Services.Web.Api
 {
     /// <summary>
-    ///
+    /// Partial startup class to main configuration.
     /// </summary>
     public partial class Startup
     {
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="env"></param>
+        /// <param name="env">Hosting environment to specific configuration, if exists.</param>
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -47,14 +36,14 @@ namespace Farfetch.Services.Web.Api
         }
 
         /// <summary>
-        ///
+        /// Gets the configuration root.
         /// </summary>
         public IConfigurationRoot Configuration { get; }
 
         /// <summary>
-        ///
+        /// Main service collection configuration.
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services">Service collection to be configured.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IEmployeeApp, EmployeeApp>();
@@ -72,13 +61,15 @@ namespace Farfetch.Services.Web.Api
         }
 
         /// <summary>
-        ///
+        /// Main application builder configuration.
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="loggerFactory"></param>
+        /// <param name="app">Application builder to be configured.</param>
+        /// <param name="env">Hosting environment to specific configuration, if exists.</param>
+        /// <param name="loggerFactory">Logger factory to be configured.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseStaticFiles();
+
             ConfigureLogger(app, loggerFactory);
             ConfigureCors(app);
             ConfigureAuth(app);

@@ -7,14 +7,14 @@ using Newtonsoft.Json.Converters;
 namespace Farfetch.Services.Web.Api
 {
     /// <summary>
-    ///
+    /// Partial startup class to API configuration.
     /// </summary>
     public partial class Startup
     {
         /// <summary>
-        ///
+        /// API service collection configuration.
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="services">Service collection to be configured.</param>
         private void ConfigureApi(IServiceCollection services)
         {
             services.AddRouting(opt => opt.LowercaseUrls = true);
@@ -34,9 +34,9 @@ namespace Farfetch.Services.Web.Api
         }
 
         /// <summary>
-        ///
+        /// API application builder configuration.
         /// </summary>
-        /// <param name="app"></param>
+        /// <param name="app">Application builder to be configured.</param>
         private void ConfigureApi(IApplicationBuilder app)
         {
             app.UseMvc(routes =>

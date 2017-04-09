@@ -12,26 +12,32 @@ using Microsoft.AspNetCore.Mvc.Routing;
 namespace Farfetch.Services.Web.Api.Controllers
 {
     /// <summary>
-    ///
+    /// Users APIs.
     /// </summary>
     [ApiVersion("1")]
     [Route("v{version:apiVersion}/users")]
     public class UsersController : BaseApiController
     {
         #region Fields | Members
+
+        /// <summary>
+        /// User application flow.
+        /// </summary>
         private readonly IUserApp userApp;
 
+        /// <summary>
+        /// See <see cref="IUrlHelperFactory"/>.
+        /// </summary>
         private readonly IUrlHelperFactory urlHelperFactory;
         #endregion
 
         #region Constructors | Destructors
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
-        /// <param name="userApp"></param>
-        /// <param name="urlHelperFactory"></param>
-        /// <param name="context"></param>
+        /// <param name="userApp">User application flow.</param>
+        /// <param name="urlHelperFactory">See <see cref="IUrlHelperFactory"/>.</param>
         public UsersController(
             IUserApp userApp,
             IUrlHelperFactory urlHelperFactory)
@@ -44,12 +50,12 @@ namespace Farfetch.Services.Web.Api.Controllers
         #region Static methods
 
         /// <summary>
-        ///
+        /// Get link to GetUserById API.
         /// </summary>
-        /// <param name="urlHelper"></param>
-        /// <param name="id"></param>
-        /// <param name="self"></param>
-        /// <returns></returns>
+        /// <param name="urlHelper">Helper to build link.</param>
+        /// <param name="id">User id.</param>
+        /// <param name="self">Indicate if is a self link.</param>
+        /// <returns>API link.</returns>
         public static Link GetUserByIdLink(
             IUrlHelper urlHelper,
             string id,
@@ -67,12 +73,12 @@ namespace Farfetch.Services.Web.Api.Controllers
         }
 
         /// <summary>
-        ///
+        /// Get link to UpdateUser API.
         /// </summary>
-        /// <param name="urlHelper"></param>
-        /// <param name="id"></param>
-        /// <param name="self"></param>
-        /// <returns></returns>
+        /// <param name="urlHelper">Helper to build link.</param>
+        /// <param name="id">User id.</param>
+        /// <param name="self">Indicate if is a self link.</param>
+        /// <returns>API link.</returns>
         public static Link UpdateUserLink(
             IUrlHelper urlHelper,
             string id,
@@ -90,11 +96,11 @@ namespace Farfetch.Services.Web.Api.Controllers
         }
 
         /// <summary>
-        ///
+        /// Get link to DeleteUser API.
         /// </summary>
-        /// <param name="urlHelper"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="urlHelper">Helper to build link.</param>
+        /// <param name="id">User id.</param>
+        /// <returns>API link.</returns>
         public static Link DeleteUserLink(
             IUrlHelper urlHelper,
             string id)
@@ -114,13 +120,15 @@ namespace Farfetch.Services.Web.Api.Controllers
         #region Services
 
         /// <summary>
-        /// Retrieves a specific user by unique id
+        /// Retrieves a specific user by unique id.
         /// </summary>
         /// <remarks>Awesomeness!</remarks>
-        /// <response code="200">User created</response>
-        /// <response code="400">User has missing/invalid values</response>
-        /// <response code="404">User not found or not exists</response>
-        /// <response code="500">Oops! Can't get your user right now</response>
+        /// <param name="id">User id.</param>
+        /// <response code="200">User created. \o/</response>
+        /// <response code="400">User has missing/invalid values.</response>
+        /// <response code="404">User not found or not exists.</response>
+        /// <response code="500">Oops! Can't get your user right now.</response>
+        /// <returns>Any status code and response as described.</returns>
         [HttpGet]
         [Route("{id}", Name = "GetUserById")]
         [ProducesResponseType(typeof(UserModel), 200)]

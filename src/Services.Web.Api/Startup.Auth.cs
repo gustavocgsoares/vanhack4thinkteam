@@ -7,14 +7,14 @@ using Microsoft.IdentityModel.Tokens;
 namespace Farfetch.Services.Web.Api
 {
     /// <summary>
-    ///
+    /// Partial startup class to auth configuration.
     /// </summary>
     public partial class Startup
     {
         /// <summary>
-        ///
+        /// Auth application builder configuration.
         /// </summary>
-        /// <param name="app"></param>
+        /// <param name="app">Application builder to be configured.</param>
         private void ConfigureAuth(IApplicationBuilder app)
         {
             var options = GetJwtBearerOptions();
@@ -23,9 +23,9 @@ namespace Farfetch.Services.Web.Api
         }
 
         /// <summary>
-        ///
+        /// Get Jwt configuration options.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Jwt configuration options.</returns>
         private JwtBearerOptions GetJwtBearerOptions()
         {
             var parameters = GetTokenValidationParameters();
@@ -40,9 +40,9 @@ namespace Farfetch.Services.Web.Api
         }
 
         /// <summary>
-        ///
+        /// Get token validation parameters.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Token validation parameters.</returns>
         private TokenValidationParameters GetTokenValidationParameters()
         {
             var secretKey = Configuration.GetSection("TokenAuthentication:SecretKey").Value;

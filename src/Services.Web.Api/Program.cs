@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Hosting;
 namespace Farfetch.Services.Web.Api
 {
     /// <summary>
-    ///
+    /// Startup program to run APIs.
     /// </summary>
     public class Program
     {
         /// <summary>
-        ///
+        /// Main configuration.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">Settings parameters.</param>
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()

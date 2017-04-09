@@ -8,7 +8,7 @@
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "warningsAsErrors": true,
-    "xmlDoc": false
+    "xmlDoc": true
   },
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel"
@@ -16,7 +16,8 @@
   "compilationOptions": {
     "emitEntryPoint": true,
     "languageVersion": "csharp6",
-    "warningsAsErrors": true
+    "warningsAsErrors": true,
+    "xmlDoc": true
   },
   "dependencies": {
     "Application": "1.0.0-*",
